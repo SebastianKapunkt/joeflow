@@ -71,6 +71,22 @@ class TaskViewMixin(WorkflowTemplateNameViewMixin, RevisionMixin):
         task.start_next_tasks()
         return response
 
+    def create_task(self, workflow, prev_task):
+        """
+        Factory method retuning a new task instance.
+
+        Args:
+            workflow (joeflow.models.Workflow): Current workflow instance.
+            prev_task (joeflow.models.Task): Instance of the previous Task.
+
+        Returns:
+            joeflow.models.Task: New task instance.
+
+        """
+        return workflow.task_set.create(
+            name=self.name, type=self.type, workflow=workflow
+        )
+
 
 class WorkflowDetailView(WorkflowTemplateNameViewMixin, generic.DetailView):
     pass
